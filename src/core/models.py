@@ -1,17 +1,20 @@
-from enum import unique
+import uuid
 from django.db import models
-from django.db.models.deletion import CASCADE
-from django.db.models.enums import IntegerChoices
-from django.db.models.fields import CharField, PositiveIntegerField
-from django_postgres_extensions.models.fields import ArrayField, JSONField
+from django.db.models.deletion import CASCADE, DO_NOTHING
+from django.db.models.fields import CharField, IntegerField
+from django_extensions.db.fields import AutoSlugField
 
 DATETIME_FORMAT_STRING = "%A, %d %B %Y %I:%M%p"
+
 class Company(models.Model):
     name = CharField(
         max_length=48,
         unique=True
     )
-    slug = models.SlugField(max_length=48)
+    slug = AutoSlugField(
+        max_length=20,
+        populate_from=["short_name"]
+    )
     short_name = CharField(
         max_length=20,
         unique=True
@@ -29,10 +32,12 @@ class Item(models.Model):
         max_length=63,
         db_index=True
     )
-    slug = models.SlugField(max_length=63)
+    slug = AutoSlugField(
+        max_length=83,
+        populate_from=["company__short_name","name"]
+    )
     # images is an array of multiple image urls
-    images = ArrayField()
-    link = models.URLField()
+    images = models.JSONField()
     """ 
     sizes = {
         {size} : {stock left}
@@ -44,7 +49,7 @@ class Item(models.Model):
     company = models.ForeignKey(Company, on_delete=CASCADE)
     # tags
     details = models.TextField(max_length=255)
-    rating = models.IntegerChoices()
+    rating = models.FloatField()
     price = models.FloatField()
     discount = models.FloatField(default=0.0)
     
@@ -57,11 +62,16 @@ class Item(models.Model):
 
 
 class User(models.Model):
-    password = models.CharField()
-    name = models.CharField()
+    uid = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False
+    )
+    password = models.CharField(max_length=24)
+    name = models.CharField(max_length=48)
     email = models.EmailField(unique=True)
-    phone = models.CharField(unique=True)
-    gender = models.TextChoices()
+    phone = models.CharField(unique=True, max_length=16)
+    gender = models.CharField(max_length=10)
 
     class Meta:
         ordering = ["name"]
@@ -71,28 +81,38 @@ class User(models.Model):
 
 
 class Address(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User,on_delete=CASCADE)
+    short_name = models.CharField(max_length=20)
+    slug = AutoSlugField(
+        max_length=90,
+        populate_from=["user__uid","short_name"]
+    )
     line_1 = models.CharField(max_length=32)
     line_2 = models.CharField(max_length=32)
     city = models.CharField(max_length=32)
-    state = models.TextChoices()
+    state = models.CharField(max_length=32)
     pincode = models.IntegerField()
-    country = models.TextChoices()
+    country = models.CharField(max_length=32)
 
     class Meta:
         ordering = ["user", "state", "city"]
         unique_together = ("user", "line_1", "line_2", "city", "state", "pincode", "country")
-
+        unique_together = ("user", "short_name")
     def __str__(self) -> str:
         return f"{self.user}: , {self.line_1} {self.line_2} {self.city} {self.state} {self.pincode}"
 
 
 class Order(models.Model):
     order_timestamp = models.DateTimeField()
-    user = models.ForeignKey(User)
+    oid = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False
+    )
+    user = models.ForeignKey(User, on_delete=DO_NOTHING)
     amount = models.FloatField()
     discount = models.FloatField(default=0.0)
-    address = models.ForeignKey(Address)
+    address = models.ForeignKey(Address, on_delete=DO_NOTHING)
 
     class Meta:
         get_latest_by = "order_timestamp"
@@ -104,13 +124,17 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    item = models.ForeignKey(Item)
-    order = models.ForeignKey(Order)
+    item = models.ForeignKey(Item, on_delete=DO_NOTHING)
+    slug = AutoSlugField(
+        max_length=83,
+        populate_from=["order__oid","item__id"]
+    )
+    order = models.ForeignKey(Order, on_delete=CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     discount = models.FloatField(default=0.0)
     delivery_timestamp = models.DateTimeField()
     payment_timestamp = models.DateTimeField()
-    payment_type = models.TextChoices()
+    payment_type = models.CharField(max_length=20)
 
     class Meta:
         get_latest_by = "delivery_timestamp"
@@ -122,11 +146,15 @@ class OrderItem(models.Model):
 
 
 class Review(models.Model):
-    item_id = models.ForeignKey(Item, on_delete=CASCADE)
-    order_id = models.ForeignKey(Order, on_delete=CASCADE)
+    item = models.ForeignKey(Item, on_delete=CASCADE)
+    slug = AutoSlugField(
+        max_length=83,
+        populate_from=["order__oid","item__id"]
+    )
+    order = models.ForeignKey(Order, on_delete=CASCADE)
     timestamp = models.DateTimeField()
-    images = ArrayField()
-    rating = IntegerChoices()
+    images = models.JSONField()
+    rating = IntegerField()
     description = models.TextField()
 
     class Meta:
