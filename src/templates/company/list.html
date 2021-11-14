@@ -1,0 +1,11 @@
+<h2>Company List</h2>
+<ul>
+  {% for company in company_list %}
+    <li>
+      <a href="{{ company.get_absolute_url }}">
+        {{ company.short_name|title }}</a>
+    </li>
+  {% empty %}
+    <li><em>There are currently no Companies available.</em></li>
+  {% endfor %}
+</ul>

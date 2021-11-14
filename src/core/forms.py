@@ -1,10 +1,10 @@
 from django.forms import ModelForm
 
-from .models import User
+from .models import Company
 
-class UserForm(ModelForm):
+class CompanyForm(ModelForm):
 
 
     class Meta:
-        model = User
+        model = Company
         fields = "__all__"

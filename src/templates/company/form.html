@@ -1,7 +1,7 @@
-{% extends parent_template|default:"user/base.html" %}
+{% extends parent_template|default:"company/base.html" %}
 
 {% block title %}
-    {{ block.super }} - {% if update %}Update{% else %}Create{% endif %} User
+    {{ block.super }} - {% if update %}Update{% else %}Create{% endif %} Company
 {% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">
-            {% if update %}Update{% else %}Create{% endif %} User
+            {% if update %}Update{% else %}Create{% endif %} Company
         </button>
     </form>
 {% endblock %}

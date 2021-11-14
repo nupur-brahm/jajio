@@ -27,6 +27,14 @@ class Company(models.Model):
     def __str__(self) -> str:
         return f"{self.name} : {self.short_name}"
 
+    def get_absolute_url(self):
+        return reverse(
+            "company_detail",
+            kwargs={
+                "slug" : self.slug
+            }
+        )
+
 
 class Item(models.Model):
     name = models.CharField(

@@ -17,7 +17,7 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
 )
 
-from .forms import UserForm
+from .forms import CompanyForm
 
 from .serializers import CompanySerializer, ItemSerializer, UserSerializer, AddressSerializer, OrderSerializer, OrderItemSerializer, ReviewSerializer
 from .models import Company, Item, User, Address, Order, OrderItem, Review
@@ -98,36 +98,36 @@ from .models import Company, Item, User, Address, Order, OrderItem, Review
 #     queryset = Review.objects.all()
 #     serializer_class = ReviewSerializer
 
-class UserList(ListView):
+class CompanyList(ListView):
 
-    queryset = User.objects.all()
-    template_name = "user/list.html"
+    queryset = Company.objects.all()
+    template_name = "company/list.html"
 
-class UserDetail(DetailView):
+class CompanyDetail(DetailView):
     
-    queryset = User.objects.all()
-    template_name = "user/detail.html"
-    slug_field = "uid"
-    slug_url_kwarg = "uid"
+    queryset = Company.objects.all()
+    template_name = "company/detail.html"
+    # slug_field = "uid"
+    # slug_url_kwarg = "uid"
 
-class UserCreate(CreateView):
-    form_class = UserForm
-    model = User
-    template_name = "user/form.html"
+class CompanyCreate(CreateView):
+    form_class = CompanyForm
+    model = Company
+    template_name = "company/form.html"
     extra_context = {"update": False}
 
-class UserUpdate(UpdateView):
-    form_class = UserForm
-    model = User
-    template_name = "user/form.html"
+class CompanyUpdate(UpdateView):
+    form_class = CompanyForm
+    model = Company
+    template_name = "company/form.html"
     extra_context = {"update": True}
-    slug_field = "uid"
-    slug_url_kwarg = "uid"
+    # slug_field = "uid"
+    # slug_url_kwarg = "uid"
 
-class UserDelete(DeleteView):
-    model = User
-    template_name = "user/confirm_delete.html"
-    success_url = reverse_lazy("user_list.html")
+class CompanyDelete(DeleteView):
+    model = Company
+    template_name = "company/confirm_delete.html"
+    success_url = reverse_lazy("company_list")
 
 
 
