@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 
 from core.routers import urlpatterns as core_api_urls
+from core.urls import urlpatterns as core_urls 
 
 api_urls = core_api_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/v1/", include(api_urls)),
+    path("", include(core_urls))
 ]

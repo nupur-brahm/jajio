@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.deletion import CASCADE, DO_NOTHING
 from django.db.models.fields import CharField, IntegerField
 from django_extensions.db.fields import AutoSlugField
+from django.urls import reverse
 
 DATETIME_FORMAT_STRING = "%A, %d %B %Y %I:%M%p"
 
@@ -78,6 +79,14 @@ class User(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}: {self.email}"
+    
+    def get_absolute_url(self):
+        return reverse(
+            "user_detail",
+            kwargs={
+                "uid" : self.uid
+            }
+        )
 
 
 class Address(models.Model):

@@ -14,14 +14,14 @@ class CompanySerializer(HyperlinkedModelSerializer):
         extra_kwargs = {
             "url": {
                 "lookup_field":"slug",
-                "view_name":"Api-Company-Detail"
+                "view_name":"api-company-detail"
             }
         }
         
 
 class ItemSerializer(HyperlinkedModelSerializer):
 
-    company = CompanySerializer()
+    company = CompanySerializer(read_only=True)
 
     class Meta:
         model = Item
@@ -29,7 +29,7 @@ class ItemSerializer(HyperlinkedModelSerializer):
         extra_kwargs = {
             "url": {
                 "lookup_field": "slug",
-                "view_name": "Api-Item-Detail"
+                "view_name": "api-item-detail"
             }
         }
 
@@ -42,14 +42,14 @@ class UserSerializer(HyperlinkedModelSerializer):
         extra_kwargs = {
             "url": {
                 "lookup_field": "uid",
-                "view_name": "Api-User-Detail"
+                "view_name": "api-user-detail"
             }
         }
 
 
 class AddressSerializer(HyperlinkedModelSerializer):
 
-    user = UserSerializer()
+    user = UserSerializer(read_only=True)
     
     class Meta:
         model = Address
@@ -57,15 +57,15 @@ class AddressSerializer(HyperlinkedModelSerializer):
         extra_kwargs = {
             "url": {
                 "lookup_field": "slug",
-                "view_name": "Api-Address-Detail"
+                "view_name": "api-address-detail"
             }
         }
 
 
 class OrderSerializer(HyperlinkedModelSerializer):
 
-    user = UserSerializer()
-    address = AddressSerializer()
+    user = UserSerializer(read_only=True)
+    address = AddressSerializer(read_only=True)
         
     class Meta:
         model = Order
@@ -73,15 +73,15 @@ class OrderSerializer(HyperlinkedModelSerializer):
         extra_kwargs = {
             "url": {
                 "lookup_field": "oid",
-                "view_name": "Api-Order-Detail"
+                "view_name": "api-order-detail"
             }
         }
 
 
 class OrderItemSerializer(HyperlinkedModelSerializer):
 
-    order = OrderSerializer()
-    item = ItemSerializer()
+    order = OrderSerializer(read_only=True)
+    item = ItemSerializer(read_only=True)
         
     class Meta:
         model = OrderItem
@@ -89,14 +89,14 @@ class OrderItemSerializer(HyperlinkedModelSerializer):
         extra_kwargs = {
             "url": {
                 "lookup_field": "slug",
-                "view_name": "Api-OrderItem-Detail"
+                "view_name": "api-orderitem-detail"
             }
         }
 
 class ReviewSerializer(HyperlinkedModelSerializer):
 
-    item = ItemSerializer()
-    order = OrderSerializer()
+    item = ItemSerializer(read_only=True)
+    order = OrderSerializer(read_only=True)
         
     class Meta:
         model = Review
@@ -104,6 +104,6 @@ class ReviewSerializer(HyperlinkedModelSerializer):
         extra_kwargs = {
             "url": {
                 "lookup_field": "slug",
-                "view_name": "Api-Review-Detail"
+                "view_name": "api-review-detail"
             }
         }

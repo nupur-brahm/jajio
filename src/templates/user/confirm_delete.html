@@ -1,0 +1,21 @@
+{% extends parent_template|default:"user/base.html" %}
+
+{% block title %}
+    {{ user.name }}: delete?
+{% endblock %}
+
+{% block content %}
+    <form
+        action="."
+        method="post"
+    >
+        {% csrf_token %}
+        <p>
+            Are use sure you want to delete user {{ user.name }}?
+        </p>
+        <a href="{{ user.get_absolute_url }}">
+            Cancel
+        </a>
+        <button type="submit">Delete User</button>
+    </form>
+{% endblock %}

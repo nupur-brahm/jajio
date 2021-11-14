@@ -1,0 +1,18 @@
+{% extends parent_template|default:"user/base.html" %}
+
+{% block title %}
+    {{ block.super }} - {% if update %}Update{% else %}Create{% endif %} User
+{% endblock %}
+
+{% block content %}
+    <form
+        action="."
+        method="post"
+    >
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">
+            {% if update %}Update{% else %}Create{% endif %} User
+        </button>
+    </form>
+{% endblock %}
