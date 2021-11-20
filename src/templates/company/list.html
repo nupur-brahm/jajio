@@ -1,11 +1,25 @@
-<h2>Company List</h2>
-<ul>
-  {% for company in company_list %}
-    <li>
-      <a href="{{ company.get_absolute_url }}">
-        {{ company.short_name|title }}</a>
-    </li>
-  {% empty %}
-    <li><em>There are currently no Companies available.</em></li>
-  {% endfor %}
-</ul>
+{% extends parent_template|default:"company/base.html" %}
+
+{% block title %}
+  {{ block.super }} - Company List
+{% endblock %}
+{% block content %}
+  <h2>Company List</h2>
+  {% if perms.core.add_company %}
+    <p>
+      <a href="{% url 'company_create' %}">
+        Add New Company
+      </a>
+    <p>
+  {% endif %}
+  <ul>
+    {% for company in company_list %}
+      <li>
+        <a href="{{ company.get_absolute_url }}">
+          {{ company.short_name|title }}</a>
+      </li>
+    {% empty %}
+      <li><em>There are currently no Companies available.</em></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

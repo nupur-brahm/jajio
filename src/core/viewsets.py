@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 
 from .models import(
-    User,
+    MyUser,
     Company,
     Item,
     Address,
@@ -10,7 +10,7 @@ from .models import(
     Review,
 )
 from .serializers import(
-    UserSerializer,
+    MyUserSerializer,
     CompanySerializer,
     ItemSerializer,
     AddressSerializer,
@@ -34,11 +34,11 @@ class ItemViewSet(ModelViewSet):
     serializer_class = ItemSerializer
 
 
-class UserViewSet(ModelViewSet):
+class MyUserViewSet(ModelViewSet):
 
     lookup_field = "uid"
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = MyUser.objects.all()
+    serializer_class = MyUserSerializer
 
 
 class AddressViewSet(ModelViewSet):

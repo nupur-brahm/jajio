@@ -1,3 +1,6 @@
+from django.contrib.auth.mixins import (
+    PermissionRequiredMixin,
+)
 from django import template
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
@@ -19,8 +22,8 @@ from rest_framework.generics import (
 
 from .forms import CompanyForm
 
-from .serializers import CompanySerializer, ItemSerializer, UserSerializer, AddressSerializer, OrderSerializer, OrderItemSerializer, ReviewSerializer
-from .models import Company, Item, User, Address, Order, OrderItem, Review
+from .serializers import CompanySerializer, ItemSerializer, MyUserSerializer, AddressSerializer, OrderSerializer, OrderItemSerializer, ReviewSerializer
+from .models import Company, Item, MyUser, Address, Order, OrderItem, Review
 
 # class CompanyApiDetail(RetrieveAPIView):
 #     queryset = Company.objects.all()
@@ -43,16 +46,16 @@ from .models import Company, Item, User, Address, Order, OrderItem, Review
 #     queryset = Item.objects.all()
 #     serializer_class = ItemSerializer
 
-# class UserApiDetail(RetrieveUpdateDestroyAPIView):
+# class MyUserApiDetail(RetrieveUpdateDestroyAPIView):
 
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+#     queryset = MyUser.objects.all()
+#     serializer_class = MyUserSerializer
 #     lookup_field = "uid"
 
-# class UserApiList(ListCreateAPIView):
+# class MyUserApiList(ListCreateAPIView):
 
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+#     queryset = MyUser.objects.all()
+#     serializer_class = MyUserSerializer
 
 # class AddressApiDetail(RetrieveAPIView):
 
@@ -110,22 +113,25 @@ class CompanyDetail(DetailView):
     # slug_field = "uid"
     # slug_url_kwarg = "uid"
 
-class CompanyCreate(CreateView):
+class CompanyCreate(PermissionRequiredMixin, CreateView):
     form_class = CompanyForm
     model = Company
+    permission_required = "company.add_company"
     template_name = "company/form.html"
     extra_context = {"update": False}
 
-class CompanyUpdate(UpdateView):
+class CompanyUpdate(PermissionRequiredMixin, UpdateView):
     form_class = CompanyForm
     model = Company
+    permission_required = "company.change_company"
     template_name = "company/form.html"
     extra_context = {"update": True}
     # slug_field = "uid"
     # slug_url_kwarg = "uid"
 
-class CompanyDelete(DeleteView):
+class CompanyDelete(PermissionRequiredMixin, DeleteView):
     model = Company
+    permission_required = "company.delete_company"
     template_name = "company/confirm_delete.html"
     success_url = reverse_lazy("company_list")
 

@@ -70,7 +70,7 @@ class Item(models.Model):
         return f"{self.company} : {self.name}"
 
 
-class User(models.Model):
+class MyUser(models.Model):
     uid = models.UUIDField(
         default=uuid.uuid4,
         unique=True,
@@ -98,7 +98,7 @@ class User(models.Model):
 
 
 class Address(models.Model):
-    user = models.ForeignKey(User,on_delete=CASCADE)
+    user = models.ForeignKey(MyUser,on_delete=CASCADE)
     short_name = models.CharField(max_length=20)
     slug = AutoSlugField(
         max_length=90,
@@ -126,7 +126,7 @@ class Order(models.Model):
         unique=True,
         editable=False
     )
-    user = models.ForeignKey(User, on_delete=DO_NOTHING)
+    user = models.ForeignKey(MyUser, on_delete=DO_NOTHING)
     amount = models.FloatField()
     discount = models.FloatField(default=0.0)
     address = models.ForeignKey(Address, on_delete=DO_NOTHING)

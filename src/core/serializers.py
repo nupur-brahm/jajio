@@ -3,7 +3,7 @@ from rest_framework.serializers import (
     ModelSerializer,
 )
 
-from .models import Company, Item, User, Address, Order, OrderItem, Review
+from .models import Company, Item, MyUser, Address, Order, OrderItem, Review
 
 class CompanySerializer(HyperlinkedModelSerializer):
 
@@ -34,10 +34,10 @@ class ItemSerializer(HyperlinkedModelSerializer):
         }
 
 
-class UserSerializer(HyperlinkedModelSerializer):
+class MyUserSerializer(HyperlinkedModelSerializer):
     
     class Meta:
-        model = User
+        model = MyUser
         fields = "__all__"
         extra_kwargs = {
             "url": {
@@ -49,7 +49,7 @@ class UserSerializer(HyperlinkedModelSerializer):
 
 class AddressSerializer(HyperlinkedModelSerializer):
 
-    user = UserSerializer(read_only=True)
+    user = MyUserSerializer(read_only=True)
     
     class Meta:
         model = Address
@@ -64,7 +64,7 @@ class AddressSerializer(HyperlinkedModelSerializer):
 
 class OrderSerializer(HyperlinkedModelSerializer):
 
-    user = UserSerializer(read_only=True)
+    user = MyUserSerializer(read_only=True)
     address = AddressSerializer(read_only=True)
         
     class Meta:

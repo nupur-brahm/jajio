@@ -5,8 +5,8 @@ from rest_framework.routers import DefaultRouter
 #     CompanyApiList,
 #     ItemApiDetail,
 #     ItemApiList,
-#     UserApiDetail,
-#     UserApiList,
+#     MyUserApiDetail,
+#     MyUserApiList,
 #     AddressApiDetail,
 #     AddressApiList,
 #     OrderApiDetail,
@@ -19,7 +19,7 @@ from rest_framework.routers import DefaultRouter
 from .viewsets import(
     CompanyViewSet,
     ItemViewSet,
-    UserViewSet,
+    MyUserViewSet,
     AddressViewSet,
     OrderViewSet,
     OrderItemViewSet,
@@ -29,7 +29,7 @@ from .viewsets import(
 api_router = DefaultRouter()
 api_router.register("company", CompanyViewSet, basename="api-company")
 api_router.register("item", ItemViewSet, basename="api-item")
-api_router.register("user", UserViewSet, basename="api-user")
+api_router.register("user", MyUserViewSet, basename="api-user")
 api_router.register("address", AddressViewSet, basename="api-address")
 api_router.register("order", OrderViewSet, basename="api-order")
 api_router.register("orderitem", OrderItemViewSet, basename="api-orderitem")
@@ -41,8 +41,8 @@ urlpatterns = api_routes + [
     # path("company/<str:slug>/", CompanyApiDetail.as_view(), name="Api-Company-Detail"),
     # path("item/", ItemApiList.as_view(), name="Api-Item-List"),
     # path("item/<str:slug>/", ItemApiDetail.as_view(), name="Api-Item-Detail"),
-    # path("user/", UserApiList.as_view(), name="Api-User-List"),
-    # path("user/<str:uid>/", UserApiDetail.as_view(), name="Api-User-Detail"),
+    # path("user/", MyUserApiList.as_view(), name="Api-MyUser-List"),
+    # path("user/<str:uid>/", MyUserApiDetail.as_view(), name="Api-MyUser-Detail"),
     # path("address/", AddressApiList.as_view(), name="Api-Address-List"),
     # path("address/<str:slug>/", AddressApiDetail.as_view(), name="Api-Address-Detail"),
     # path("order/", OrderApiList.as_view(), name="Api-Order-List"),

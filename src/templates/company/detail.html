@@ -1,1 +1,27 @@
-<h2>Short Name: {{ company.short_name|title }} | Full Name: {{ company.name|title }}</h2>
+{% extends parent_template|default:"company/base.html" %}
+
+{% block title %}
+  {{ company.short_name|title }}
+{% endblock %}
+
+{% block content %}
+  <h2>{{ company.name|title }}</h2>
+  {% if perms.core.change_company or perms.core.delete_company %}
+    <ul>
+      {% if perms.core.change_company %}
+        <li>
+          <a href="{{ company.get_update_url }}">
+            Update
+          </a>
+        </li>
+      {% endif %}
+      {% if perms.core.delete_company %}
+        <li>
+          <a href="{{ company.get_delete_url }}">
+            Delete
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  {% endif %}
+{% endblock %}
