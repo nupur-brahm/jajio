@@ -16,14 +16,15 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 print(__file__)
-STATIC_ROOT = BASE_DIR / "runtime" /"static"
+# STATIC_ROOT = BASE_DIR / "runtime" /"static"
+STATIC_ROOT = BASE_DIR / "stati_root"
 STATIC_URL = "/static/"
 STATICFILES_STORAGE = (
     "django.contrib.staticfiles.storage.StaticFilesStorage"
 )
 
 STATICFILES_DIRS = [BASE_DIR / "static_content"]
-WHITENOISE_ROOT = BASE_DIR / "static_root"
+# WHITENOISE_ROOT = BASE_DIR / "static_root"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/

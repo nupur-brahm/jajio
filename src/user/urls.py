@@ -5,13 +5,16 @@ from django_registration.backends.activation.views import (
     RegistrationView,
 )
 
-from .forms import RegistrationForm
+from .forms import CompanyRegistrationForm, RegistrationForm
 from .views import (
     AccountPage,
     ActivationView,
     PasswordChangeView,
     PasswordResetConfirmView,
     PasswordResetView,
+    CompanyApprovalPendingList,
+    CompanyApproveView,
+    UserList,
 )
 
 urlpatterns = [
@@ -72,4 +75,36 @@ urlpatterns = [
         ),
         name="django_registration_disallowed",
     ),
+    path(
+        "register_company/",
+        RegistrationView.as_view(
+            form_class=CompanyRegistrationForm,
+            success_url=reverse_lazy(
+                "auth:django_registration_company_complete"
+            ),
+        ),
+        name="django_registration_register_company",
+    ),
+    path(
+        "register_company/complete/",
+        TemplateView.as_view(
+            template_name="django_registration/company_registration_complete.html"
+        ),
+        name="django_registration_company_complete",
+    ),
+    path(
+        "companies_pending_approval/",
+        CompanyApprovalPendingList.as_view(),
+        name="django_approval_pending_companies",
+    ),
+    path(
+        "approve_company/<int:pk>/",
+        CompanyApproveView.as_view(),
+        name="django_approve_company",
+    ),
+    path(
+        "user/",
+        UserList.as_view(),
+        name="django_list_users"
+    )
 ]

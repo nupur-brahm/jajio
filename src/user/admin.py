@@ -11,6 +11,8 @@ from improved_user.forms import (
     UserCreationForm,
 )
 
+from user.models import Address
+
 User = get_user_model()
 
 
@@ -21,7 +23,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {"fields": ("email", "password")}),
         (
             _("Personal info"),
-            {"fields": ("full_name", "short_name")},
+            {"fields": ("full_name", "short_name", "type", "verified")},
         ),
         (
             _("Permissions"),
@@ -61,9 +63,13 @@ class UserAdmin(BaseUserAdmin):
         "full_name",
         "short_name",
         "is_staff",
+        "type",
+        "verified",
     )
     search_fields = ("email", "full_name", "short_name")
     ordering = ("email",)
 
 
 admin.site.register(User, UserAdmin)
+
+admin.site.register(Address)

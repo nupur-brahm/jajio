@@ -6,4 +6,14 @@
     Please use the navigation links above to roam
     the site.
   </p>
+  <ul>
+    {% for item in item_list %}
+      <li>
+        <a href="{{ item.get_absolute_url }}">
+          {{ item.name|title }}</a>
+      </li>
+    {% empty %}
+      <li><em>There are currently no Items available.</em></li>
+    {% endfor %}
+  </ul>
 {% endblock %}

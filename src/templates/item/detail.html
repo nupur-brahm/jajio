@@ -1,0 +1,38 @@
+{% extends parent_template|default:"item/base.html" %}
+
+{% block title %}
+  {{ item.short_name|title }}
+{% endblock %}
+
+{% block content %}
+  <h2>{{ item.name|title }}</h2>
+  Item sizes: {{ item.sizes }}
+  <br>
+  Item details: {{ item.details }}
+  <br>
+  Item rating: {{ item.rating }}
+  {% if perms.core.change_item or perms.core.delete_item or perms.core.view_item %}
+    <ul>
+      {% if perms.core.change_item %}
+        <li>
+          <a href="{{ item.get_update_url }}">
+            Update
+          </a>
+        </li>
+      {% endif %}
+      {% if perms.core.delete_item %}
+        <li>
+          <a href="{{ item.get_delete_url }}">
+            Delete
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+    <li>
+      <a href="{% url 'move_item_to_cart' item.slug %}">
+        Add to cart
+      </a>
+    </li>
+  {% endif %}
+  
+{% endblock %}

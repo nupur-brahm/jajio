@@ -1,23 +1,13 @@
 from rest_framework.serializers import (
-    HyperlinkedModelSerializer,
-    ModelSerializer,
+    HyperlinkedModelSerializer
 )
+from user.serializers import(
+    CompanySerializer,
+    BuyerSerializer,
+    AddressSerializer,
+)
+from .models import Item, Order, OrderItem, Review
 
-from .models import Company, Item, MyUser, Address, Order, OrderItem, Review
-
-class CompanySerializer(HyperlinkedModelSerializer):
-
-
-    class Meta:
-        model = Company
-        fields = "__all__"
-        extra_kwargs = {
-            "url": {
-                "lookup_field":"slug",
-                "view_name":"api-company-detail"
-            }
-        }
-        
 
 class ItemSerializer(HyperlinkedModelSerializer):
 
@@ -34,37 +24,9 @@ class ItemSerializer(HyperlinkedModelSerializer):
         }
 
 
-class MyUserSerializer(HyperlinkedModelSerializer):
-    
-    class Meta:
-        model = MyUser
-        fields = "__all__"
-        extra_kwargs = {
-            "url": {
-                "lookup_field": "uid",
-                "view_name": "api-user-detail"
-            }
-        }
-
-
-class AddressSerializer(HyperlinkedModelSerializer):
-
-    user = MyUserSerializer(read_only=True)
-    
-    class Meta:
-        model = Address
-        fields = "__all__"
-        extra_kwargs = {
-            "url": {
-                "lookup_field": "slug",
-                "view_name": "api-address-detail"
-            }
-        }
-
-
 class OrderSerializer(HyperlinkedModelSerializer):
 
-    user = MyUserSerializer(read_only=True)
+    user = BuyerSerializer(read_only=True)
     address = AddressSerializer(read_only=True)
         
     class Meta:
@@ -92,6 +54,7 @@ class OrderItemSerializer(HyperlinkedModelSerializer):
                 "view_name": "api-orderitem-detail"
             }
         }
+
 
 class ReviewSerializer(HyperlinkedModelSerializer):
 

@@ -63,20 +63,28 @@
             <li><a href="{% url 'auth:login' %}?next={{ request.path }}">
               Log In</a></li>
             {% endif %}
+            <li><a href="{% url 'cart' %}">
+              Cart
+            </a></li>
           </ul>
         </div><!-- four columns -->
       </div><!-- status row -->
 
       <header class="row">
         <div class="offset-by-one ten columns">
-          <h1 class="logo">JAJIO</h1>
+          <h1 class="logo"><a href="{% url 'site_root' %}" style="text-decoration:none;">JAJIO</a></h1>
         </div>
       </header>
 
       <nav>
         <ul>
           <li><a href="{% url 'api-root' %}">Explore Our Api</a></li>
-          <li><a href="{% url 'company_list' %}">Company</a></li>
+          {% if perms.core.add_item %}
+            <li><a href="{% url 'item_list' %}">Item</a></li>
+          {% endif%}
+          {% if perms.user.add_user %}
+            <li><a href="{% url 'auth:django_approval_pending_companies' %}">Approve Companies</a></li>
+          {% endif %}
         </ul>
       </nav>
       

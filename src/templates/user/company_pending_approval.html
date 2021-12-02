@@ -1,0 +1,19 @@
+{% extends parent_template|default:"user/base.html" %}
+
+{% block title %}
+  {{ block.super }} - Pending Approval Company List
+{% endblock %}
+
+{% block content %}
+  <h2>Pending Approval Company List</h2>
+  <ul>
+    {% for user in user_list %}
+      <li>
+        <a href="{{ user.get_absolute_url }}">
+          {{ user.short_name|title }}</a> : {{ user.full_name }}
+      </li>
+    {% empty %}
+      <li><em>There are currently no Companies pending approval.</em></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

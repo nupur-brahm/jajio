@@ -16,5 +16,19 @@
         Already have an account?
       </a>
     </li>
+    {% url 'auth:django_registration_register' as comparision_url %}
+    {% if request.get_full_path == comparision_url %}
+      <li>
+        <a href="{% url 'auth:django_registration_register_company' %}">
+          Register as company
+        </a>
+      </li>
+    {% else %}
+    <li>
+      <a href="{% url 'auth:django_registration_register' %}">
+        Register as user
+      </a>
+    </li>
+    {% endif %}
   </ul>
 {% endblock %}

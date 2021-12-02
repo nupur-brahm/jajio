@@ -1,6 +1,7 @@
 {% extends parent_template|default:"user/base.html" %}
 
 {% block content %}
+  <h2>{{ user.full_name }}</h2>
   <a href="{%  url 'auth:password_change' %}">
     Change your password
   </a>
