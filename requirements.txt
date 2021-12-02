@@ -1,0 +1,12 @@
+Django==3.2.8
+djangorestframework==3.12.4
+django-extensions==3.1.3
+django-test-plus==2.2.0
+ipython==7.29.0
+jupyter==1.0.0
+django-improved-user==1.0.1
+cffi==1.15.0
+argon2-cffi==21.1.0
+factory-boy==3.2.1
+confusable-homoglyphs==3.2.0
+django-registration==3.2

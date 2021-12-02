@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Core{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css"
+      href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" type="text/css"
+      href="{% static 'css/skeleton.css' %}">
+    <link rel="stylesheet" type="text/css"
+      href="{% static 'css/style.css' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#ffffff">
+  </head>
+  <body>
+    <div class="container">
+      <!--[if lte IE 9]>
+        <div class="row">
+          <p class="browserupgrade">
+            You are using an <strong>outdated</strong> browser. Please
+            <a href="https://browsehappy.com/">upgrade your browser</a>
+            to improve your experience and security.
+          </p>
+        </div>
+      <![endif]-->
+
+      {% if messages %}
+      <div class="row">
+        <div class="twelve columns">
+          <ul class="messages">
+            {% for message in messages %}
+              {% if message.tags %}
+                <li class="{{ message.tags }}">
+              {% else %}
+                <li>
+              {% endif %}
+              {{ message }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="status row">
+        <div class="offset-by-eight four columns">
+          <ul class="inline">
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'auth:account' %}">
+              Manage Account</a></li>
+            <li><a href="{% url 'auth:logout' %}">
+              Log Out</a></li>
+            {% else %}
+            <li><a href="{% url 'auth:django_registration_register' %}">
+              Register
+            </a></li>
+            <li><a href="{% url 'auth:login' %}?next={{ request.path }}">
+              Log In</a></li>
+            {% endif %}
+            <li><a href="{% url 'cart' %}">
+              Cart
+            </a></li>
+          </ul>
+        </div><!-- four columns -->
+      </div><!-- status row -->
+
+      <header class="row">
+        <div class="offset-by-one ten columns">
+          <h1 class="logo"><a href="{% url 'site_root' %}" style="text-decoration:none;">JAJIO</a></h1>
+        </div>
+      </header>
+
+      <nav>
+        <ul>
+          <li><a href="{% url 'api-root' %}">Explore Our Api</a></li>
+          {% if perms.core.add_item %}
+            <li><a href="{% url 'item_list' %}">Item</a></li>
+          {% endif%}
+          {% if perms.user.add_user %}
+            <li><a href="{% url 'auth:django_approval_pending_companies' %}">Approve Companies</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+      
+      <main>
+        {% block content %}{% endblock %}
+      </main>
+
+    </div><!-- container-->
+
+    <footer>
+      <p>
+        Built by Nupur Brahmanya under the
+        <a href="https://opensource.org/licenses/BSD-2-Clause">
+          Simplified BSD License</a>.
+      </p>
+    <footer>
+
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{% extends parent_template|default:'django_registration/base.html' %}
+
+{% block title %}
+{{ block.super }} - Account Activation Failed
+{% endblock %}
+
+{% block content %}
+  <div>
+    <p>This activation link is either longer valid 
+      if you registered more than 7 days ago
+      or your credentials have not been verfied 
+      by our administrator.
+    </p>
+  </div>
+{% endblock %}

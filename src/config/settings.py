@@ -15,6 +15,16 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+print(__file__)
+# STATIC_ROOT = BASE_DIR / "runtime" /"static"
+STATIC_ROOT = BASE_DIR / "stati_root"
+STATIC_URL = "/static/"
+STATICFILES_STORAGE = (
+    "django.contrib.staticfiles.storage.StaticFilesStorage"
+)
+
+STATICFILES_DIRS = [BASE_DIR / "static_content"]
+# WHITENOISE_ROOT = BASE_DIR / "static_root"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -37,6 +47,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party
+    "django_extensions",
+    'rest_framework',
+    # first party
+    'core.apps.CoreConfig',
+    'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -54,9 +70,12 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
+            "builtins": [
+                "django.templatetags.static"
+            ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -84,20 +103,46 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
+AUTH_USER_MODEL = "user.User"
+
+ACCOUNT_ACTIVATION_DAYS = 7
+
+REGISTRATION_SALT = "registration"
+
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+]
+
+
+AUTH_P = "django.contrib.auth.password_validation."
+
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': AUTH_P + 'UserAttributeSimilarityValidator',
+        'OPTIONS': {
+            "user_attributes": (
+                'email',
+                'full_name',
+                'short_name',
+            )
+        },
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': AUTH_P + 'MinimumLengthValidator',
+        'OPTIONS' : {'min_length': 12}
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': AUTH_P + 'CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': AUTH_P + 'NumericPasswordValidator',
     },
 ]
+
+LOGIN_URL = "auth:login"
+LOGIN_REDIRECT_URL = "site_root"
+LOGOUT_REDIRECT_URL = "auth:login"
 
 
 # Internationalization
@@ -118,6 +163,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# EMAIL_FILE_PATH = '/home/vaibhav/Desktop/workspace/jajio/app-messages'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

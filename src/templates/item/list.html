@@ -1,0 +1,25 @@
+{% extends parent_template|default:"item/base.html" %}
+
+{% block title %}
+  {{ block.super }} - Item List
+{% endblock %}
+{% block content %}
+  <h2>Item List</h2>
+  {% if perms.core.add_item %}
+    <p>
+      <a href="{% url 'item_create' %}">
+        Add New Item
+      </a>
+    <p>
+  {% endif %}
+  <ul>
+    {% for item in item_list %}
+      <li>
+        <a href="{{ item.get_absolute_url }}">
+          {{ item.name|title }}</a>
+      </li>
+    {% empty %}
+      <li><em>There are currently no Items available.</em></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

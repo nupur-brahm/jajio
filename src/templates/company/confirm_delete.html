@@ -1,0 +1,21 @@
+{% extends parent_template|default:"company/base.html" %}
+
+{% block title %}
+  {{ company.short_name }}: delete?
+{% endblock %}
+
+{% block content %}
+  <form
+    action="."
+    method="post"
+  >
+    {% csrf_token %}
+    <p>
+      Are use sure you want to delete company {{ company.short_name }}?
+    </p>
+    <a href="{{ company.get_absolute_url }}">
+      Cancel
+    </a>
+    <button type="submit">Delete Company</button>
+  </form>
+{% endblock %}

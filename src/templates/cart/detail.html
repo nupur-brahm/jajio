@@ -1,0 +1,26 @@
+{% extends parent_template|default:"cart/base.html" %}
+
+{% block title %}
+  {{ request.session.user.short_name|title }} Cart
+{% endblock %}
+
+{% block content %}
+  <h2>Cart Items</h2>
+  {% if cart_list %}
+  <ul>
+    {% for cart_item in cart_list %}
+      <li>
+        <a href="{{ company.get_absolute_url }}">
+          {{ cart_item.item.name|title }}</a>
+          <br>
+          Quantity: {{ cart_item.quantity }}
+          <br>
+          Size: {{ cart_item.size }}
+      </li>
+    {% endfor %}
+    <a href="{{ checkout }}">Checkout</a>
+  {% else %}
+      <li><em>There are currently no Items in your cart.</em></li>
+  {% endif %}
+  </ul>
+{% endblock %}
